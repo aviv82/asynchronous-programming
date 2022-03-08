@@ -15,6 +15,12 @@ const handleResponse = (res) => {
 };
 
 const createSummary = (user) => {
+  const userSummary = {
+    name: user.name,
+    city: user.address.city,
+    companyName: user.company.name,
+  };
+  return userSummary;
   // write me!
 };
 
@@ -28,7 +34,11 @@ log('fetching and processing user 5');
       city: 'Roscoeview',
       companyName: 'Keebler LLC'
     } */
-__;
+fetchUserById(5)
+  .then(handleResponse)
+  .then(createSummary)
+  .then(log)
+  .catch(handleError);
 
 log('fetching and processing user 1');
 /*  {
@@ -36,7 +46,11 @@ log('fetching and processing user 1');
       city: 'Gwenborough',
       companyName: 'Romaguera-Crona',
     } */
-__;
+fetchUserById(1)
+  .then(handleResponse)
+  .then(createSummary)
+  .then(log)
+  .catch(handleError);
 
 log('fetching and processing user 10');
 /*  {
@@ -44,10 +58,18 @@ log('fetching and processing user 10');
       city: 'Lebsackbury',
       companyName: 'Hoeger LLC',
     } */
-__;
+fetchUserById(10)
+  .then(handleResponse)
+  .then(createSummary)
+  .then(log)
+  .catch(handleError);
 
 log('fetching and processing user -1');
 // 404
-__;
+fetchUserById(-1)
+  .then(handleResponse)
+  .then(createSummary)
+  .then(log)
+  .catch(handleError);
 
 log('= = = =  the call stack is empty  = = = =');
