@@ -7,9 +7,24 @@ const { log } = labeledLogger();
 // --- declare function ---
 
 /**
- *
+ * A function that fetches a user and returns their contact info (email, phone number and webpage).
+ * 
+ * @param {number} userId - The user ID to fetch.
+ * @returns {Promise<array of strings>} A promise that resolves to the user's contact info.
+ * 
+ * @throws {Error} {status number}: {status text}
  */
-const contactInfo = () => {};
+
+const contactInfo = (id = 0) => {
+  return fetchUserById(id).then((res) => {
+    if (!res.ok) {
+      throw new Error(`${res.status}: ${res.statusText}`);
+    }
+    return res.json();
+  }).then((user) => {
+    return [user.email, user.phone, user.website];
+  })
+};
 
 // --- test function ---
 
