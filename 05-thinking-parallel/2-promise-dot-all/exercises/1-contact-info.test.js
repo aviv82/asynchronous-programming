@@ -1,9 +1,56 @@
 import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
 
 /**
+ * Fetches users by their ids and returns the user's introduction.
  *
+ * @async
+ * @param {array} [ids = []] - The array of user ids to fetch.
+ * @returns {Promise<array>} - An array of the users's intros.
+ *
+ * @throws {Error} {status number}: {status text}
  */
-const getIntros = async (ids = []) => {};
+
+const getIntros = async (ids = []) => {
+  const responsePromises = ids.map((nextId) => fetchUserById(nextId));
+  const responses = await Promise.all(responsePromises);
+  for (const res of responses) {
+    if (!res.ok) {
+      throw new Error(`${res.status}: ${res.statusTesxt}`);
+    }
+  }
+  const userPromises = responses.map((response) => {
+    return response.json();
+  });
+  const users = await Promise.all(userPromises);
+  console.log(users);
+  const intros = users.map((user) => {
+    return `${user.id}: Hello, my name is ${user.name}`;
+  });
+  return intros;
+};
+
+/*
+const userPromises = responses.map((response) => response.json());
+  const users = await Promise.all(userPromises);
+*/
+
+/*
+const names = users.map((user) => `${user.id}. ${user.name}`);
+  return names;
+*/
+
+// 6: Hello, my name is Mrs. Dennis Schulist
+//   const responsePromises = ids.map((nextId) => fetchUserById(nextId));
+
+//  const responses = await Promise.all(responsePromises);
+
+/*
+for (const res of responses) {
+    if (!res.ok) {
+      throw new Error(`${res.status}: ${res.statusText}`);
+    }
+  }
+*/
 
 // --- --- tests --- ---
 
