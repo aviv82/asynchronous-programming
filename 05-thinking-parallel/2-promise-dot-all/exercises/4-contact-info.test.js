@@ -1,9 +1,28 @@
 import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
 
 /**
- *
+ * Fetches users by their ids and returns their email, phone number and website on a string.
+ * 
+ * @async
+ * @param {array} [ids = []] - The array of user ids to fetch.
+ * @returns {Promise<array>} An array of strings with the users' email, phone number and website.
+ * 
+ * @throws {Error} {status}: {text}
  */
-const contactDetails = async (ids = []) => {};
+
+
+const contactDetails = async (ids = []) => {
+  const responsePromises = ids.forEach((id) => {
+    return fetchUserById(id)
+  })
+  const responses = await Promise.all(responsePromises); 
+  responses.forEach((response) => {
+    if(!response.ok) {
+      throw new Error(``)
+    }
+  })
+
+};
 
 // --- --- tests --- ---
 

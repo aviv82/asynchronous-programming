@@ -11,6 +11,29 @@ import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
  */
 
 const getIntros = async (ids = []) => {
+  const resPromise = ids.map((id) => {
+    return fetchUserById(id);
+  });
+  try {
+    const responses = await Promise.all(resPromise);
+    for (const res of responses) {
+      if (!res.ok) {
+        throw new Error(`${res.status}: ${res.statusText}`);
+      }
+    }
+    const usersPromise = responses.map((user) => user.json());
+    const users = await Promise.all(usersPromise);
+    const usersIntro = users.map((user) => {
+      return `${user.id}: Hello, my name is ${user.name}`;
+    });
+    return usersIntro;
+  } catch (exception) {
+    throw new Error(exception);
+  }
+};
+
+/*
+const getIntros = async (ids = []) => {
   const responsePromises = ids.map((nextId) => fetchUserById(nextId));
   const responses = await Promise.all(responsePromises);
   for (const res of responses) {
@@ -28,6 +51,7 @@ const getIntros = async (ids = []) => {
   });
   return intros;
 };
+*/
 
 /*
 const userPromises = responses.map((response) => response.json());
