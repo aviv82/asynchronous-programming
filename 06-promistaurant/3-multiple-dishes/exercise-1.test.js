@@ -29,13 +29,44 @@ import {
  *  Complete the following code so that the test passes
  */
 
-const preparedExtras = _;
+/*
+const preparedExtras = Promise.all(
+  [extras.egg, extras.onion, extras.pineapple, extras.mushrooms].map((e) =>
+    prepareExtra(e),
+  ),
+);
+ */
+const preparedExtras  = Promise.all(
+  [
+    extras.egg,
+    extras.onion,
+    extras.redPepper,
+    extras.pineapple,
+    extras.bambooShoots,
+  ].map((e) => prepareExtra(e)),
+);
 
-const JoelPrep = _;
+const joelPrep = preparePortion(sizes.small, bases.riceNoodles).then((meal) =>
+  addVegetables(meal)
+    .then((meal) => addTopping(meal, toppings.chicken))
+    .then((meal) => addSauce(meal, sauces.youWok)),
+);
 
-const kylePrep = _;
+const kylePrep = preparePortion(sizes.medium, bases.fineNoodles)
+  .then((meal) => addVegetables(meal))
+  .then((meal) => addTopping(meal, toppings.shrimps))
+  .then((meal) => addSauce(meal, sauces.soya));
 
-const theOrder = _;
+const theOrder = Promise.all([
+  joelPrep,
+  kylePrep,
+  preparedExtras,
+]).then(([jmeal, kmeal, [egg, onion, redPepper, pineapple, bambooShoots]]) =>
+  Promise.all([
+    addPreparedExtras(jmeal, [egg, redPepper, onion]),
+    addPreparedExtras(kmeal, [pineapple, bambooShoots]),
+  ]).then(([jmeal, kmeal]) => Promise.all([bag(jmeal), bag(kmeal)])),
+);
 
 theOrder
   .then(([joelsMeal, kylesMeal]) => {
