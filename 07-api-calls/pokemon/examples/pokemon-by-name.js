@@ -30,7 +30,7 @@ const pokemonByName = async (name = '') => {
       : `HTTP error! status: ${response.status}\n-> ${URL}`;
     throw new Error(message);
   }
-
+  ``;
   /* --- parse the data if the response was ok (this works!) ---*/
   const data = await response.json();
 
