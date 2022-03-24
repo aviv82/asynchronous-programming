@@ -1,19 +1,19 @@
 import { wikiResource } from '../API-calls/wiki-resource.js';
+import { renderSearchData } from '../component/render-search-data.js';
 
 /**
  *
  */
 
 export const fetchAndRenderItem = async (event) => {
-  const output = document.getElementById('output');
+  const app = document.getElementById('app');
   const error = document.getElementById('#error');
-
   const searchTerm = event.target.parentElement.children[0].value;
   try {
     const searchResult = await wikiResource(searchTerm);
+    renderSearchData(searchResult);
   } catch (error) {
-    throw new Error(error);
+    const output = document.getElementById('output');
+    output.innerHTML = "OWW shit! API isn't working!";
   }
-
-  return;
 };
